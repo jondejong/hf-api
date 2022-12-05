@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+
+  postgres:
+    restart: always
+    image: postgres:15.1
+    ports:
+     - "5432:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/docker-postgresql.conf:/etc/postgresql.conf
+    environment:
+      - POSTGRES_USER=hfapi
+      - POSTGRES_DB=hand_and_foot
+      - POSTGRES_PASSWORD=Password1!
+    command: postgres -c config_file=/etc/postgresql.conf

@@ -6,3 +6,5 @@ build
 
 # Ingore IDE
 .idea
+
+generated
