@@ -5,6 +5,7 @@ package hf.api
 
 import hf.api.app.AppFactory
 import hf.api.filter.ErrorHandlerFilter
+import hf.api.properties.DatabaseProperties
 import hf.api.properties.HFApiProperties
 import hf.api.properties.ServerProperties
 import org.http4k.core.*
@@ -25,7 +26,8 @@ class App(appFactory: AppFactory) {
         "/hello" bind routes(
             "/{name:.*}" bind Method.GET to { request: Request -> Response(Status.OK).body("Hello, ${request.path("name")}!") }
         ),
-        "deck" bind appFactory.deckRoutes.routes
+        "deck" bind appFactory.deckRoutes.routes,
+        "players" bind appFactory.playerRoutes.routes
     )
 
     private val app =
@@ -62,6 +64,12 @@ fun main() {
             HFApiProperties(
                 serverProperties = ServerProperties(
                     port = 9000
+                ),
+                //TODO: Get these from somewhere else
+                DatabaseProperties(
+                    url = "jdbc:postgresql://localhost:5432/hand_and_foot",
+                    username = "hfapi",
+                    password = "Password1!"
                 )
             )
         )

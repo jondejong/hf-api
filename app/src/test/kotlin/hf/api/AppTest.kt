@@ -5,6 +5,7 @@ package hf.api
 
 import hf.api.api.cardListLens
 import hf.api.app.AppFactory
+import hf.api.properties.DatabaseProperties
 import hf.api.properties.HFApiProperties
 import hf.api.properties.ServerProperties
 import org.http4k.client.ApacheClient
@@ -17,26 +18,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class AppTest {
-    companion object {
-
-        private val testPort = 9999
-
-        private val app = App(AppFactory(HFApiProperties(ServerProperties(port = testPort))))
-        private val client = ApacheClient()
-
-        @BeforeClass
-        @JvmStatic
-        fun setup() {
-            app.start()
-        }
-
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            app.stop()
-        }
-    }
+class AppTest : BaseTest(){
 
     @Test
     fun `can fetch a deck`() {
