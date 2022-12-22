@@ -30,8 +30,8 @@ class PlayerRoutes : HFConfigurable {
     }
 
     private val createHandler = { request: Request ->
-        val name = createPlayerLens(request).name
-        val id = playerService.create(name)
+        val createPlayerRequest = createPlayerLens(request)
+        val id = playerService.create(createPlayerRequest.name, createPlayerRequest.password)
         idLens(ID(id), Response(Status.OK))
     }
 

@@ -26,8 +26,9 @@ class App(appFactory: AppFactory) {
         "/hello" bind routes(
             "/{name:.*}" bind Method.GET to { request: Request -> Response(Status.OK).body("Hello, ${request.path("name")}!") }
         ),
-        "deck" bind appFactory.deckRoutes.routes,
-        "players" bind appFactory.playerRoutes.routes
+        "deck" bind appFactory.deckRoutes.routes.withFilter(appFactory.authenticationFilter.authenticationFilter),
+        "players" bind appFactory.playerRoutes.routes,
+        "login" bind appFactory.loginRoutes.routes
     )
 
     private val app =
