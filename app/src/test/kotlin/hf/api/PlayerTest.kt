@@ -1,6 +1,9 @@
 package hf.api
 
-import hf.api.api.*
+import hf.api.api.createPlayerLens
+import hf.api.api.idLens
+import hf.api.api.playerLens
+import hf.api.api.playerListLens
 import hf.api.api.request.CreatePlayerRequest
 import org.http4k.core.Method
 import org.http4k.core.Request
@@ -40,7 +43,6 @@ class PlayerTest : BaseTest() {
         val secondListOfPlayers = playerListLens(secondGetResponse)
         assertEquals(numberOfPlayers + 1, secondListOfPlayers.size)
 
-        println("Fetching for $id at http://localhost:$testPort/players/${id.id}")
         val fetchResponse = client(Request(Method.GET, "http://localhost:$testPort/players/${id.id}"))
         assertNotNull(fetchResponse)
         assertEquals(Status.OK, fetchResponse.status)

@@ -4,21 +4,14 @@
 package hf.api
 
 import hf.api.api.cardListLens
-import hf.api.app.AppFactory
-import hf.api.properties.DatabaseProperties
-import hf.api.properties.HFApiProperties
-import hf.api.properties.ServerProperties
-import org.http4k.client.ApacheClient
 import org.http4k.core.Method
 import org.http4k.core.Request
 import org.http4k.core.Status
-import org.junit.AfterClass
-import org.junit.BeforeClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class AppTest : BaseTest(){
+class AppTest : BaseTest() {
 
     @Test
     fun `can fetch a deck`() {
