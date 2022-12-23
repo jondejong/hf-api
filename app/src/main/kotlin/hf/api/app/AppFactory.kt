@@ -2,9 +2,11 @@ package hf.api.app
 
 import AuthenticationFilter
 import com.zaxxer.hikari.HikariDataSource
+import hf.api.cards.CardRepository
 import hf.api.cards.DeckRoutes
 import hf.api.cards.DeckService
 import hf.api.database.DatabaseConfig
+import hf.api.game.*
 import hf.api.player.*
 import hf.api.properties.HFApiProperties
 import org.http4k.core.RequestContexts
@@ -40,6 +42,14 @@ class AppFactory(properties: HFApiProperties) {
     val loginService = LoginService()
     val loginRoutes = LoginRoutes()
 
+    // Game
+    val cardRepository = CardRepository()
+    val cardPositionRepository = CardPositionRepository()
+    val shoeRepository = ShoeRepository()
+    val gameRepository = GameRepository()
+    val gameService = GameService()
+    val gameRoutes = GameRoutes()
+
     init {
         // Filer
         authenticationFilter.setUp(this)
@@ -55,5 +65,13 @@ class AppFactory(properties: HFApiProperties) {
         loginService.setUp(this)
         hydratedPlayerService.setUp(this)
         loginRoutes.setUp(this)
+
+        // Game
+        cardRepository.setUp(this)
+        cardPositionRepository.setUp(this)
+        shoeRepository.setUp(this)
+        gameRepository.setUp(this)
+        gameService.setUp(this)
+        gameRoutes.setUp(this)
     }
 }

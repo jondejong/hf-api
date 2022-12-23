@@ -27,6 +27,7 @@ class App(appFactory: AppFactory) {
             "/{name:.*}" bind Method.GET to { request: Request -> Response(Status.OK).body("Hello, ${request.path("name")}!") }
         ),
         "deck" bind appFactory.deckRoutes.routes.withFilter(appFactory.authenticationFilter.authenticationFilter),
+        "game" bind appFactory.gameRoutes.routes.withFilter(appFactory.authenticationFilter.authenticationFilter),
         "players" bind appFactory.playerRoutes.routes,
         "login" bind appFactory.loginRoutes.routes
     )
@@ -59,7 +60,6 @@ class App(appFactory: AppFactory) {
 }
 
 fun main() {
-
     val app = App(
         appFactory = AppFactory(
             HFApiProperties(

@@ -1,5 +1,6 @@
-package hf.api
+package hf.api.integration
 
+import hf.api.App
 import hf.api.app.AppFactory
 import hf.api.properties.DatabaseProperties
 import hf.api.properties.HFApiProperties
@@ -8,7 +9,7 @@ import org.http4k.client.ApacheClient
 import org.junit.AfterClass
 import org.junit.BeforeClass
 
-open class BaseTest {
+open class BaseIntegrationTest {
     companion object {
 
         val testPort = 9999

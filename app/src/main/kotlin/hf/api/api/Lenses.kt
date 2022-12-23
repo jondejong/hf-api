@@ -1,5 +1,6 @@
 package hf.api.api
 
+import hf.api.api.request.CreateGameRequest
 import hf.api.api.request.CreatePlayerRequest
 import hf.api.api.request.LoginRequest
 import hf.api.api.response.*
@@ -23,6 +24,9 @@ val playerListLens = Body.auto<List<PlayerResponse>>().toLens()
 val createPlayerLens = Body.auto<CreatePlayerRequest>().toLens()
 val loginRequestLens = Body.auto<LoginRequest>().toLens()
 val loginResponseLens = Body.auto<LoginResponse>().toLens()
+
+// Game
+val createGameLens = Body.auto<CreateGameRequest>().toLens()
 
 // ID
 val idLens = Body.auto<ID>().toLens()
