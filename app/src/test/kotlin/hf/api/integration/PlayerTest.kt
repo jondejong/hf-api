@@ -1,4 +1,4 @@
-package hf.api
+package hf.api.integration
 
 import hf.api.api.createPlayerLens
 import hf.api.api.idLens
@@ -12,7 +12,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class PlayerTest : BaseTest() {
+class PlayerTest : BaseIntegrationTest() {
 
     @Test
     fun `can create players`() {
@@ -28,7 +28,7 @@ class PlayerTest : BaseTest() {
 
         val createResponse = client(
             createPlayerLens(
-                CreatePlayerRequest("test-user"),
+                CreatePlayerRequest("test-user", "Password1!"),
                 Request(Method.POST, "http://localhost:$testPort/players")
             )
         )

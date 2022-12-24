@@ -1,3 +1,3 @@
 package hf.api.cards
 
-data class Card(val suit: Suit, val number: Number, val value: Int)
+data class Card(val id: String, val suit: Suit, val number: Number, val value: Int)
