@@ -2,7 +2,10 @@ package hf.api.game
 
 import hf.api.app.AppFactory
 import hf.api.app.HFService
+import hf.api.app.ServiceUtils
 import hf.api.cards.CardRepository
+import hf.api.exception.IllegalDataStateException
+import hf.api.exception.ItemNotFoundException
 import java.util.*
 
 class GameService : HFService<Game>() {
@@ -20,23 +23,42 @@ class GameService : HFService<Game>() {
     }
 
     fun create(shoeSize: Int): String {
-        val id = UUID.randomUUID().toString()
+        val gameId = UUID.randomUUID().toString()
         val shoe = Shoe(
             id = UUID.randomUUID().toString(),
             size = shoeSize
         )
         val game = Game(
-            id = id,
+            id = gameId,
             shoe = shoe
         )
 
         gameRepository.create(game)
-        shoeRepository.create(shoe, id)
+        shoeRepository.create(shoe, gameId)
         game.shoe.cards.forEach { cardPosition ->
             cardRepository.create(cardPosition.card)
             cardPositionRepository.create(cardPosition, shoe.id)
         }
 
-        return id
+        return gameId
+    }
+
+    fun nextCard(gameId: String): CardPosition {
+        val currentPositions = shoeRepository.fetchNextPositionByGame(gameId)
+        if (currentPositions.isEmpty()) {
+            throw ItemNotFoundException()
+        } else if (currentPositions.size > 1) {
+            throw IllegalDataStateException()
+        }
+        val currentPosition = currentPositions[0]!!
+        shoeRepository.updateNextPosition(nextPosition = currentPosition.position + 1, shoeId = currentPosition.shoeId)
+        return ServiceUtils<CardPosition>().validateUniqueInstance(
+            cardPositionRepository.fetchByShoePosition(
+                ShoePosition(
+                    shoeId = currentPosition.shoeId,
+                    position = currentPosition.position
+                )
+            )
+        )
     }
 }

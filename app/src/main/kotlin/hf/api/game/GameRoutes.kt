@@ -1,5 +1,6 @@
 package hf.api.game
 
+import hf.api.api.cardPositionLens
 import hf.api.api.createGameLens
 import hf.api.api.idLens
 import hf.api.api.response.ID
@@ -10,6 +11,7 @@ import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status
 import org.http4k.routing.bind
+import org.http4k.routing.path
 import java.util.*
 
 class GameRoutes : HFConfigurable {
@@ -26,7 +28,15 @@ class GameRoutes : HFConfigurable {
         idLens(ID(UUID.fromString(id)), Response(Status.OK))
     }
 
+    private val nextCardHandler = { request: Request ->
+        cardPositionLens(
+            gameService.nextCard(request.path("gameId") ?: ""),
+            Response(Status.OK)
+        )
+    }
+
     val routes = org.http4k.routing.routes(
         "/" bind Method.POST to createHandler,
+        "/{gameId:.*}/next" bind Method.GET to nextCardHandler
     )
 }

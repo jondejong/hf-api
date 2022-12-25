@@ -12,12 +12,12 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class PlayerTest : BaseIntegrationTest() {
+class PlayerTest : BaseOpenIntegrationTest() {
 
     @Test
     fun `can create players`() {
 
-        val baseRequest = Request(Method.GET, "http://localhost:$testPort/players")
+        val baseRequest = Request(Method.GET, "$baseUrl/players")
 
         val resp = client(baseRequest)
         assertNotNull(resp)
@@ -29,7 +29,7 @@ class PlayerTest : BaseIntegrationTest() {
         val createResponse = client(
             createPlayerLens(
                 CreatePlayerRequest("test-user", "Password1!"),
-                Request(Method.POST, "http://localhost:$testPort/players")
+                Request(Method.POST, "$baseUrl/players")
             )
         )
 
@@ -43,7 +43,7 @@ class PlayerTest : BaseIntegrationTest() {
         val secondListOfPlayers = playerListLens(secondGetResponse)
         assertEquals(numberOfPlayers + 1, secondListOfPlayers.size)
 
-        val fetchResponse = client(Request(Method.GET, "http://localhost:$testPort/players/${id.id}"))
+        val fetchResponse = client(Request(Method.GET, "$baseUrl/players/${id.id}"))
         assertNotNull(fetchResponse)
         assertEquals(Status.OK, fetchResponse.status)
         val player = playerLens(fetchResponse).name

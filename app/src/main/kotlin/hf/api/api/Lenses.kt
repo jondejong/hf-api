@@ -5,6 +5,7 @@ import hf.api.api.request.CreatePlayerRequest
 import hf.api.api.request.LoginRequest
 import hf.api.api.response.*
 import hf.api.cards.Card
+import hf.api.game.CardPosition
 import org.http4k.core.Body
 import org.http4k.format.Jackson.auto
 
@@ -27,6 +28,7 @@ val loginResponseLens = Body.auto<LoginResponse>().toLens()
 
 // Game
 val createGameLens = Body.auto<CreateGameRequest>().toLens()
+val cardPositionLens = Body.auto<CardPosition>().toLens()
 
 // ID
 val idLens = Body.auto<ID>().toLens()
