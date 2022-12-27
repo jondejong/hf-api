@@ -1,7 +1,11 @@
 package hf.api.game
 
+import com.jondejong.hf.model.tables.Card.CARD
 import com.jondejong.hf.model.tables.CardPosition.CARD_POSITION
 import hf.api.app.HFRepository
+import hf.api.cards.Card
+import hf.api.cards.Number
+import hf.api.cards.Suit
 
 class CardPositionRepository : HFRepository() {
 
@@ -16,4 +20,30 @@ class CardPositionRepository : HFRepository() {
             .values(cardPosition.id, cardPosition.card.id, cardPosition.position, shoeId)
             .execute()
     }
+
+    fun fetchByShoePosition(shoePosition: ShoePosition): List<CardPosition> {
+        return context.select()
+            .from(CARD_POSITION)
+            .join(CARD)
+            .on(CARD_POSITION.CARD.eq(CARD.ID))
+            .where(CARD_POSITION.SHOE.eq(shoePosition.shoeId))
+            .and(CARD_POSITION.POSITION.eq(shoePosition.position))
+            .fetch()
+            .map { record ->
+                val cardPosition = CardPosition(
+                    card = Card(
+                        id = record[CARD.ID],
+                        suit = Suit.valueOf(record[CARD.SUIT]),
+                        number = Number.valueOf(record[CARD.NUMBER]),
+                        value = record[CARD.VALUE]
+                    ),
+                    id = record[CARD_POSITION.ID]
+                )
+                cardPosition.withPosition(record[CARD_POSITION.POSITION])
+                cardPosition
+            }
+
+
+    }
+
 }

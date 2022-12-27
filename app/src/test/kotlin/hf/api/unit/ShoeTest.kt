@@ -2,7 +2,7 @@ package hf.api.unit
 
 import hf.api.game.Shoe
 import org.junit.Test
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -11,9 +11,9 @@ class ShoeTest {
     @Test
     fun `can create a shoe`() {
         val shoe = Shoe(UUID.randomUUID().toString(), 6)
-        assertEquals(6*54, shoe.cards.size)
+        assertEquals(6 * 54, shoe.cards.size)
         var previousPosition = -1
-        shoe.cards.forEach{
+        shoe.cards.forEach {
             assertTrue(it.position > previousPosition)
             previousPosition = it.position
         }
