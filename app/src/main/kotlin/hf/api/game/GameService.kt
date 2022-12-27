@@ -44,13 +44,7 @@ class GameService : HFService<Game>() {
     }
 
     fun nextCard(gameId: String): CardPosition {
-        val currentPositions = shoeRepository.fetchNextPositionByGame(gameId)
-        if (currentPositions.isEmpty()) {
-            throw ItemNotFoundException()
-        } else if (currentPositions.size > 1) {
-            throw IllegalDataStateException()
-        }
-        val currentPosition = currentPositions[0]!!
+        val currentPosition = ServiceUtils<ShoePosition>().validateUniqueInstance(shoeRepository.fetchNextPositionByGame(gameId))
         shoeRepository.updateNextPosition(nextPosition = currentPosition.position + 1, shoeId = currentPosition.shoeId)
         return ServiceUtils<CardPosition>().validateUniqueInstance(
             cardPositionRepository.fetchByShoePosition(
