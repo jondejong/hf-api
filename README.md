@@ -23,4 +23,36 @@ relevant to me.
 ### To test
 > ./gradlew test
 
+### Get Started With the API
+
+Once the app is up and running, you can create a user for yourself 
+using the `players` endpoint.
+> POST http://localhost:9000/players 
+> {
+"name": "myusername",
+"password": "mypassword"
+}
+
+Now you can use the `login` endpoint that you use to authenticate.
+> POST http://localhost:9000/login 
+> {
+"name": "myusername",
+"password": "mypassword"
+}
+
+This will return an authentication token for your new user that you can use to
+utilize the rest of the API's. To use this token, us the `X-AUTH-TOKEN`
+request header. Example:
+> X-AUTH-TOKEN: 231801e9-5ec2-4f15-a3b2-18c8c6150d3b
+
+Next you can create a new game using the `games` endpoint. Post to this endpoint
+with the desired shoe size. This will return the game ID you can use to access 
+the game going forward.
+> POST http://localhost:9000/games
+> {
+"shoeSize" : 6
+}
+
+Now you can the games endpoint to deal off the top of the shoe:
+> GET http://localhost:9000/games/<game_id>/next
 
