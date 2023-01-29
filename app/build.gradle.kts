@@ -151,7 +151,7 @@ tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJ
     archiveBaseName.set("shadow")
     mergeServiceFiles()
     manifest {
-        attributes(mapOf("Main-Class" to "hf.api.AppKt"))
+        attributes(mapOf("Main-Class" to "com.jondejong.hf.api.App"))
     }
 }
 
