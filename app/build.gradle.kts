@@ -22,6 +22,8 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
 
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+
     idea
 }
 
@@ -143,5 +145,13 @@ tasks.named("run") {
 
 tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
     dependsOn("flywayMigrate")
+}
+
+tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+    archiveBaseName.set("shadow")
+    mergeServiceFiles()
+    manifest {
+        attributes(mapOf("Main-Class" to "hf.api.AppKt"))
+    }
 }
 

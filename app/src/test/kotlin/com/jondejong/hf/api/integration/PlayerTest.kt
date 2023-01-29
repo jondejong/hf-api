@@ -1,0 +1,52 @@
+package com.jondejong.hf.api.integration
+
+import com.jondejong.hf.api.api.createPlayerLens
+import com.jondejong.hf.api.api.idLens
+import com.jondejong.hf.api.api.playerLens
+import com.jondejong.hf.api.api.playerListLens
+import com.jondejong.hf.api.api.request.CreatePlayerRequest
+import org.http4k.core.Method
+import org.http4k.core.Request
+import org.http4k.core.Status
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+
+class PlayerTest : BaseOpenIntegrationTest() {
+
+    @Test
+    fun `can create players`() {
+
+        val baseRequest = Request(Method.GET, "$baseUrl/players")
+
+        val resp = client(baseRequest)
+        assertNotNull(resp)
+        assertEquals(Status.OK, resp.status)
+
+        val players = playerListLens(resp)
+        var numberOfPlayers = players.size
+
+        val createResponse = client(
+            createPlayerLens(
+                CreatePlayerRequest("test-user", "Password1!"),
+                Request(Method.POST, "$baseUrl/players")
+            )
+        )
+
+        assertEquals(Status.OK, createResponse.status)
+        val id = idLens(createResponse)
+
+        val secondGetResponse = client(baseRequest)
+        assertNotNull(secondGetResponse)
+        assertEquals(Status.OK, secondGetResponse.status)
+
+        val secondListOfPlayers = playerListLens(secondGetResponse)
+        assertEquals(numberOfPlayers + 1, secondListOfPlayers.size)
+
+        val fetchResponse = client(Request(Method.GET, "$baseUrl/players/${id.id}"))
+        assertNotNull(fetchResponse)
+        assertEquals(Status.OK, fetchResponse.status)
+        val player = playerLens(fetchResponse).name
+        assertEquals("test-user", playerLens(fetchResponse).name)
+    }
+}
