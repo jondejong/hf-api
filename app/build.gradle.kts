@@ -78,7 +78,7 @@ flyway {
 
 application {
     // Define the main class for the application.
-    mainClass.set("hf.api.AppKt")
+    mainClass.set("com.jondejong.hf.api.AppKt")
 }
 
 idea {
@@ -148,10 +148,10 @@ tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
 }
 
 tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
-    archiveBaseName.set("shadow")
+    archiveBaseName.set("hfapi")
     mergeServiceFiles()
     manifest {
-        attributes(mapOf("Main-Class" to "com.jondejong.hf.api.App"))
+        attributes(mapOf("Main-Class" to "com.jondejong.hf.api.AppKT"))
     }
 }
 
